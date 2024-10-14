@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Enum\ReservationStatus;
+use App\Enum\ReservationType;
 use App\Repository\ReservationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,11 +24,11 @@ class Reservation
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $end_date = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $status = [];
+    #[ORM\Column(type: 'string', enumType:ReservationStatus::class)]
+    private ReservationStatus $status;
 
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $type = [];
+    #[ORM\Column(type: 'string', enumType:ReservationType::class)]
+    private ReservationType $type;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
@@ -76,24 +78,24 @@ class Reservation
         return $this;
     }
 
-    public function getStatus(): array
+    public function getStatus(): ReservationStatus
     {
         return $this->status;
     }
 
-    public function setStatus(array $status): static
+    public function setStatus(ReservationStatus $status): self
     {
         $this->status = $status;
 
         return $this;
     }
 
-    public function getType(): array
+    public function getType(): ReservationType
     {
         return $this->type;
     }
 
-    public function setType(array $type): static
+    public function setType(ReservationType $type): self
     {
         $this->type = $type;
 

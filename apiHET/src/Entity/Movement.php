@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\MovementType;
 use App\Repository\MovementRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,8 +15,8 @@ class Movement
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $movement_type = [];
+    #[ORM\Column(type: 'string', enumType: MovementType::class)]
+    private MovementType $type;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
@@ -29,14 +30,14 @@ class Movement
         return $this->id;
     }
 
-    public function getMovementType(): array
+    public function getType(): MovementType
     {
-        return $this->movement_type;
+        return $this->type;
     }
 
-    public function setMovementType(array $movement_type): static
+    public function setType(MovementType $type): self
     {
-        $this->movement_type = $movement_type;
+        $this->type = $type;
 
         return $this;
     }
