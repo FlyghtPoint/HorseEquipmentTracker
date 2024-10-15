@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MovementRepository::class)]
-class Movement
+class Movement implements MovementInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
