@@ -2,17 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\ReservationRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
-use App\Entity\EquipmentInterface;
+use App\Repository\ReservationRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+// use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
-class Reservation implements ReservationInterface
+class Reservation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -37,8 +36,7 @@ class Reservation implements ReservationInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reservations')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Equipment::class, inversedBy: 'reservations')]
     private ?Equipment $equipment = null;
 
     /**
@@ -86,7 +84,7 @@ class Reservation implements ReservationInterface
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(string $status): static
     {
         $this->status = $status;
 
@@ -98,31 +96,31 @@ class Reservation implements ReservationInterface
         return $this->type;
     }
 
-    public function setType(string $type): self
+    public function setType(string $type): static
     {
         $this->type = $type;
 
         return $this;
     }
 
-    public function getUser(): ?UserInterface
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?UserInterface $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getEquipment(): ?EquipmentInterface
+    public function getEquipment(): ?Equipment
     {
         return $this->equipment;
     }
 
-    public function setEquipment(?EquipmentInterface $equipment): static
+    public function setEquipment(?Equipment $equipment): static
     {
         $this->equipment = $equipment;
 

@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\MovementRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MovementRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MovementRepository::class)]
-class Movement implements MovementInterface
+class Movement
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,7 +24,7 @@ class Movement implements MovementInterface
 
     #[ORM\ManyToOne(inversedBy: 'movements')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?ReservationInterface $reservation = null;
+    private ?Reservation $reservation = null;
 
     public function getId(): ?int
     {
@@ -55,12 +55,12 @@ class Movement implements MovementInterface
         return $this;
     }
 
-    public function getReservation(): ?ReservationInterface
+    public function getReservation(): ?Reservation
     {
         return $this->reservation;
     }
 
-    public function setReservation(?ReservationInterface $reservation): static
+    public function setReservation(?Reservation $reservation): static
     {
         $this->reservation = $reservation;
 
