@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Enum\MovementType;
 use App\Repository\MovementRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MovementRepository::class)]
 class Movement
@@ -15,27 +15,28 @@ class Movement
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', enumType: MovementType::class)]
-    private MovementType $type;
+    #[ORM\Column(type: 'string', length: 20)]
+    #[Assert\Choice(choices: ['in', 'out'], message: 'Choose a valid type.')]
+    private string $type;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'movements')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Reservation $reservation = null;
+    private ?ReservationInterface $reservation = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getType(): MovementType
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function setType(MovementType $type): self
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -54,12 +55,12 @@ class Movement
         return $this;
     }
 
-    public function getReservation(): ?Reservation
+    public function getReservation(): ?ReservationInterface
     {
         return $this->reservation;
     }
 
-    public function setReservation(?Reservation $reservation): static
+    public function setReservation(?ReservationInterface $reservation): static
     {
         $this->reservation = $reservation;
 

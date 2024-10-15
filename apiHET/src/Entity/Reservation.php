@@ -12,7 +12,7 @@ use App\Entity\EquipmentInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
-class Reservation
+class Reservation implements ReservationInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
