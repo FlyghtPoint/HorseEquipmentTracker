@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EquipmentRepository::class)]
-class Equipment
+class Equipment implements EquipmentInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

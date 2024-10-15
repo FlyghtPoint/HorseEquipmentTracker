@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
-use App\Enum\ReservationStatus;
-use App\Enum\ReservationType;
 use App\Repository\ReservationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use App\Entity\EquipmentInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -24,11 +25,13 @@ class Reservation
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $end_date = null;
 
-    #[ORM\Column(type: 'string', enumType:ReservationStatus::class)]
-    private ReservationStatus $status;
+    #[ORM\Column(type: 'string',length: 20)]
+    #[Assert\Choice(choices: ['pending', 'confirmed', 'canceled'], message: 'Choose a valid status.')]
+    private string $status;
 
-    #[ORM\Column(type: 'string', enumType:ReservationType::class)]
-    private ReservationType $type;
+    #[ORM\Column(type: 'string', length: 20)]
+    #[Assert\Choice(choices: ['loan', 'maintenance', 'repair'], message: 'Choose a valid type.')]
+    private string $type;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
@@ -78,48 +81,48 @@ class Reservation
         return $this;
     }
 
-    public function getStatus(): ReservationStatus
+    public function getStatus(): string
     {
         return $this->status;
     }
 
-    public function setStatus(ReservationStatus $status): self
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
         return $this;
     }
 
-    public function getType(): ReservationType
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function setType(ReservationType $type): self
+    public function setType(string $type): self
     {
         $this->type = $type;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): ?UserInterface
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(?UserInterface $user): static
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getEquipment(): ?Equipment
+    public function getEquipment(): ?EquipmentInterface
     {
         return $this->equipment;
     }
 
-    public function setEquipment(?Equipment $equipment): static
+    public function setEquipment(?EquipmentInterface $equipment): static
     {
         $this->equipment = $equipment;
 
