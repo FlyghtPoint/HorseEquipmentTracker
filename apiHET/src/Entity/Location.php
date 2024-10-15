@@ -49,12 +49,12 @@ class Location
         return $this;
     }
 
-    public function getShelfNumber(): ?int
+    public function getShelf(): ?int
     {
         return $this->shelf_number;
     }
 
-    public function setShelfNumber(int $shelf_number): static
+    public function setShelf(int $shelf_number): static
     {
         $this->shelf_number = $shelf_number;
 
