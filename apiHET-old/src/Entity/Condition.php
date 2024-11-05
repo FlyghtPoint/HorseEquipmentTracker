@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ConditionRepository::class)]
-#[ORM\Table(name: '`condition`')]
+#[ORM\Table(name: "`condition`")]
 class Condition
 {
     #[ORM\Id]
