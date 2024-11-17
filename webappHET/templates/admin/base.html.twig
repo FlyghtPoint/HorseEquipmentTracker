@@ -1,0 +1,35 @@
+{# templates/admin/base.html.twig #}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Admin Panel{% endblock %}</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('admin') }}
+        {% endblock %}
+    </head>
+    <body>
+        <nav>
+            {# Admin navigation #}
+            <ul>
+                <li><a href="{{ path('admin_dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ path('admin_products') }}">Products</a></li>
+                <li><a href="{{ path('admin_users') }}">Users</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% block body %}{% endblock %}
+        </main>
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('admin') }}
+        {% endblock %}
+    </body>
+</html>

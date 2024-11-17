@@ -28,5 +28,8 @@ security:
       jwt: ~
 
   access_control:
-    - { path: ^/api/login, roles: PUBLIC_ACCESS }
-    - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+  # Define security rules here
+  # Ask for good practices
+  # - { path: ^/api/login, roles: PUBLIC_ACCESS } and register and documentation
+  # - { path: ^/api, methods: [GET], roles: PUBLIC_ACCESS }  # Anyone can view anything
+  # - { path: ^/api, methods: [POST, PUT, DELETE], roles: ROLE_ADMIN }  # Only admin can create, update, delete
