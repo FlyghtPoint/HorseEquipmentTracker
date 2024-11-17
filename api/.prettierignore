@@ -1,0 +1,2 @@
+# Ignore security.yaml
+config/packages/security.yaml

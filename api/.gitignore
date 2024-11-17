@@ -1,10 +1,22 @@
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*
+!/config/jwt/.gitkeep
+###< lexik/jwt-authentication-bundle ###
 
 ###> symfony/framework-bundle ###
-/.env.local
-/.env.local.php
-/.env.*.local
+.env
+.env.local
+.env.local.php
+.env.*.local
+
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+# Other sensitive files
+auth.json
+*.pem
+.phpunit.result.cache
+/phpunit.xml
