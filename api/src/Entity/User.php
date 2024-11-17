@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 // use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,19 +21,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank(message: 'Email cannot be blank')]
+    #[Assert\Email(
+        message: 'The email {{ value }} is not a valid email.',
+    )]
+    #[Assert\Length(max: 180)]
     private ?string $email = null;
-
-    /**
-     * @var list<string> The user roles
-     */
-    #[ORM\Column]
-    private array $roles = [];
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'Password cannot be blank')]
     private ?string $password = null;
+
+    /**
+     * @var list<string> The user roles
+     */
+    #[ORM\Column]
+    #[Assert\NotNull]
+    #[Assert\All([
+        new Assert\Type(type: 'string', message: 'Each role must be a string')
+    ])]    
+    private array $roles = [];
 
     /**
      * @var Collection<int, Reservation>

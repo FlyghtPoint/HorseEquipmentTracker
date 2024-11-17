@@ -20,24 +20,48 @@ class Reservation
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\Type(
+        type: \DateTimeInterface::class,
+        message: 'The value {{ value }} is not a valid datetime.'
+    )]
     private ?\DateTimeInterface $start_date = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotNull(message: 'End date cannot be null')]
+    #[Assert\Type(
+        type: \DateTimeInterface::class,
+        message: 'The value {{ value }} is not a valid datetime.'
+    )]
+    #[Assert\Expression(
+        "this.getStartDate() === null or this.getStartDate() < this.getEndDate()",
+        message: 'End date must be after start date'
+    )]    
     private ?\DateTimeInterface $end_date = null;
 
     #[ORM\Column(type: 'string',length: 20)]
-    #[Assert\Choice(choices: ['pending', 'confirmed', 'canceled'], message: 'Choose a valid status.')]
+    #[Assert\NotBlank(message: 'Status cannot be blank')]
+    #[Assert\Choice(
+        choices: ['pending', 'confirmed', 'canceled'],
+        message: 'Status must be one of: {{ choices }}'
+    )]
     private string $status;
 
     #[ORM\Column(type: 'string', length: 20)]
-    #[Assert\Choice(choices: ['loan', 'maintenance', 'repair'], message: 'Choose a valid type.')]
+    #[Assert\NotBlank(message: 'Type cannot be blank')]
+    #[Assert\Choice(
+        choices: ['loan', 'maintenance', 'repair'],
+        message: 'Type must be one of: {{ choices }}'
+    )]
     private string $type;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: 'User must be specified')]
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Equipment::class, inversedBy: 'reservations')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: 'Equipment must be specified')]
     private ?Equipment $equipment = null;
 
     /**

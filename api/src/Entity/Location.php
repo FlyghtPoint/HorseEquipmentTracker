@@ -5,6 +5,7 @@ namespace App\Entity;
 // use App\Repository\LocationRepository;
 
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,9 +19,24 @@ class Location
     private ?int $id = null;
 
     #[ORM\Column(length: 2)]
+    #[Assert\NotBlank(message: 'Aisle cannot be blank')]
+    #[Assert\Length(
+        exactly: 2,
+        exactMessage: 'Aisle must be exactly {{ limit }} characters long'
+    )]
+    #[Assert\Regex(
+        pattern: '/^[A-Z]{2}$/',
+        message: 'Aisle must be two uppercase letters'
+    )]    
     private ?string $aisle = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: 'Shelf number cannot be null')]
+    #[Assert\Positive(message: 'Shelf number must be a positive integer')]
+    #[Assert\LessThanOrEqual(
+        value: 100,
+        message: 'Shelf number cannot be greater than {{ value }}'
+    )]    
     private ?int $shelf_number = null;
 
     /**

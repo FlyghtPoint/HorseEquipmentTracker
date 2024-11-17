@@ -17,14 +17,24 @@ class Movement
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 20)]
-    #[Assert\Choice(choices: ['in', 'out'], message: 'Choose a valid type.')]
+    #[Assert\NotBlank(message: 'Type cannot be blank')]
+    #[Assert\Choice(
+        choices: ['in', 'out'],
+        message: 'Type must be either "in" or "out"'
+    )]
     private string $type;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotNull(message: 'Date cannot be null')]
+    #[Assert\Type(
+        type: \DateTimeInterface::class,
+        message: 'The value {{ value }} is not a valid datetime.'
+    )] 
     private ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'movements')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: 'Reservation must be specified')]
     private ?Reservation $reservation = null;
 
     public function getId(): ?int

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 // use App\Repository\EquipmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,21 +18,38 @@ class Equipment
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Equipment name cannot be blank')]
+    #[Assert\Length(
+        min: 2,
+        max: 255,
+        minMessage: 'Equipment name must be at least {{ limit }} characters long',
+        maxMessage: 'Equipment name cannot be longer than {{ limit }} characters'
+    )]    
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Description cannot be blank')]
+    #[Assert\Length(
+        min: 10,
+        max: 255,
+        minMessage: 'Description must be at least {{ limit }} characters long',
+        maxMessage: 'Description cannot be longer than {{ limit }} characters'
+    )]    
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'equipment')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: 'Category must be specified')]
     private ?Category $category = null;
 
     #[ORM\ManyToOne(inversedBy: 'equipment')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: 'Location must be specified')]
     private ?Location $location = null;
 
     #[ORM\ManyToOne(inversedBy: 'equipment')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: 'Condition must be specified')]
     private ?Condition $eCondition = null;
 
     /**

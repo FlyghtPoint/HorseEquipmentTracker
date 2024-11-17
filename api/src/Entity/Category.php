@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 // use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,6 +18,13 @@ class Category
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Category name cannot be blank')]
+    #[Assert\Length(
+        min: 2,
+        max: 255,
+        minMessage: 'Category name must be at least {{ limit }} characters long',
+        maxMessage: 'Category name cannot be longer than {{ limit }} characters'
+    )]
     private ?string $name = null;
 
     /**

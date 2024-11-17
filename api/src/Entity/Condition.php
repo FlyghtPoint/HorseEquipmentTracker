@@ -5,6 +5,7 @@ namespace App\Entity;
 // use App\Repository\ConditionRepository;
 
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,6 +20,13 @@ class Condition
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Condition name cannot be blank')]
+    #[Assert\Length(
+        min: 2,
+        max: 255,
+        minMessage: 'Category name must be at least {{ limit }} characters long',
+        maxMessage: 'Category name cannot be longer than {{ limit }} characters'
+    )]    
     private ?string $name = null;
 
     /**
