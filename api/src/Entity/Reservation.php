@@ -3,6 +3,10 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 // use App\Repository\ReservationRepository;
@@ -13,7 +17,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /** A reservation of an equipment. */
 #[ORM\Entity]
-#[ApiResource]
+#[ApiResource(
+    paginationItemsPerPage: 10,
+    paginationMaximumItemsPerPage: 50
+)]
+#[ApiFilter(SearchFilter::class, properties: [
+    'status' => 'exact',
+    'type' => 'exact',
+    'user.email' => 'partial',
+    'equipment.name' => 'partial'
+])]
+#[ApiFilter(DateFilter::class, properties: ['start_date', 'end_date'])]
+#[ApiFilter(OrderFilter::class, properties: ['start_date', 'status'])]
 class Reservation
 {
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]

@@ -2,6 +2,9 @@
 // api/src/Entity/Equipment.php
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
 // use App\Repository\EquipmentRepository;
@@ -11,7 +14,18 @@ use Doctrine\ORM\Mapping as ORM;
 
 /** Equipment */
 #[ORM\Entity]
-#[ApiResource]
+#[ApiResource(
+    paginationItemsPerPage: 5,
+    paginationMaximumItemsPerPage: 50,
+)]
+#[ApiFilter(SearchFilter::class, properties: [
+    'name' => 'partial',
+    'description' => 'partial',
+    'category.name' => 'exact',
+    'location.aisle' => 'exact',
+    'eCondition.name' => 'exact'
+])]
+#[ApiFilter(OrderFilter::class, properties: ['name', 'category.name'])]
 class Equipment
 {
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
