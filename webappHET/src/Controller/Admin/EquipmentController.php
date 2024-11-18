@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Service\ApiClientService;
@@ -17,13 +18,13 @@ class EquipmentController extends AbstractController
         $this->apiClient = $apiClient;
     }
 
-    #[Route('/', name: 'admin_equipment_index')]
+    #[Route('/', name: 'admin_equipment_index', methods: ['GET'])]
     public function index(): Response
     {
-        $equipments = $this->apiClient->getCollection('/equipments');
+        $equipments = $this->apiClient->getCollection('/equipment');
 
         return $this->render('admin/equipment/index.html.twig', [
-            'equipments' => $equipments['hydra:member']
+            'equipments' => $equipments
         ]);
     }
 
@@ -32,13 +33,12 @@ class EquipmentController extends AbstractController
     {
         if ($request->isMethod('POST')) {
             $data = $request->request->all();
-            
-            try {
-                $this->apiClient->create('/equipments', $data);
+
+            $response = $this->apiClient->create('/equipment', $data);
+
+            if ($response) {
                 $this->addFlash('success', 'Equipment created successfully');
                 return $this->redirectToRoute('admin_equipment_index');
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'Failed to create equipment: ' . $e->getMessage());
             }
         }
 
@@ -48,22 +48,22 @@ class EquipmentController extends AbstractController
         $categories = $this->apiClient->getCollection('/categories');
 
         return $this->render('admin/equipment/new.html.twig', [
-            'conditions' => $conditions['hydra:member'],
-            'locations' => $locations['hydra:member'],
-            'categories' => $categories['hydra:member']
+            'conditions' => $conditions,
+            'locations' => $locations,
+            'categories' => $categories
         ]);
     }
 
     #[Route('/{id}/edit', name: 'admin_equipment_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, string $id): Response
     {
-        $equipment = $this->apiClient->getItem('/equipments', $id);
+        $equipment = $this->apiClient->getItem('/equipment', $id);
 
         if ($request->isMethod('POST')) {
             $data = $request->request->all();
             
             try {
-                $this->apiClient->update('/equipments', $id, $data);
+                $this->apiClient->update('/equipment', $id, $data);
                 $this->addFlash('success', 'Equipment updated successfully');
                 return $this->redirectToRoute('admin_equipment_index');
             } catch (\Exception $e) {
@@ -78,20 +78,22 @@ class EquipmentController extends AbstractController
 
         return $this->render('admin/equipment/edit.html.twig', [
             'equipment' => $equipment,
-            'conditions' => $conditions['hydra:member'],
-            'locations' => $locations['hydra:member'],
-            'categories' => $categories['hydra:member']
+            'conditions' => $conditions,
+            'locations' => $locations,
+            'categories' => $categories
         ]);
     }
 
-    #[Route('/{id}/delete', name: 'admin_equipment_delete')]
-    public function delete(string $id): Response
+    #[Route('/{id}', name: 'admin_equipment_delete', methods: ['POST'])]
+    public function delete(Request $request, string $id): Response
     {
-        try {
-            $this->apiClient->delete('/equipments', $id);
-            $this->addFlash('success', 'Equipment deleted successfully');
-        } catch (\Exception $e) {
-            $this->addFlash('error', 'Failed to delete equipment: ' . $e->getMessage());
+        if ($this->isCsrfTokenValid('delete'.$id, $request->request->get('_token'))) {
+            try {
+                $this->apiClient->delete('/equipment', $id);
+                $this->addFlash('success', 'Equipment deleted successfully');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Failed to delete equipment: ' . $e->getMessage());
+            }
         }
 
         return $this->redirectToRoute('admin_equipment_index');
