@@ -19,23 +19,11 @@ class DashboardController extends AbstractController
     public function index(): Response
     {
         // Fetch some key metrics
-        $equipmentResponse = $this->apiClient->getCollection('/equipment');
-        $movementsResponse = $this->apiClient->getCollection('/movements');
-    
-        // dump($equipmentResponse);
-        // dump($movementsResponse);
-        // var_dump($equipmentResponse);
+        $equipmentData = $this->apiClient->getCollection('/equipment');
+        $movementsData = $this->apiClient->getCollection('/movements');
 
-        $totalEquipment = count($equipmentResponse);
-        $totalMovements = count($movementsResponse);
-
-        // $totalEquipment = isset($equipmentResponse['hydra:member']) 
-        //     ? count($equipmentResponse['hydra:member']) 
-        //     : 0;
-        
-        // $totalMovements = isset($movementsResponse['hydra:member']) 
-        //     ? count($movementsResponse['hydra:member']) 
-        //     : 0;
+        $totalEquipment = count($equipmentData);
+        $totalMovements = count($movementsData);
     
         return $this->render('admin/dashboard/index.html.twig', [
             'totalEquipment' => $totalEquipment,
