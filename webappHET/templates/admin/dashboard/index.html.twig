@@ -1,0 +1,14 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+<div class="grid grid-cols-2 gap-4">
+    <div class="bg-white p-6 rounded shadow">
+        <h2 class="text-xl font-bold mb-4">Total Equipment</h2>
+        <p class="text-3xl">{{ totalEquipment }}</p>
+    </div>
+    <div class="bg-white p-6 rounded shadow">
+        <h2 class="text-xl font-bold mb-4">Total Movements</h2>
+        <p class="text-3xl">{{ totalMovements }}</p>
+    </div>
+</div>
+{% endblock %}

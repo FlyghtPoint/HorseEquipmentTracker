@@ -1,31 +1,45 @@
 <?php
-// src/Controller/Admin/DashboardController.php
 namespace App\Controller\Admin;
 
+use App\Service\ApiClientService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/admin')]
-#[IsGranted('ROLE_ADMIN')]
 class DashboardController extends AbstractController
 {
-    #[Route('', name: 'admin_dashboard')]
-    public function index(): Response
+    private $apiClient;
+
+    public function __construct(ApiClientService $apiClient)
     {
-        return $this->render('admin/dashboard.html.twig', [
-            'stats' => $this->getDashboardStats(),
-        ]);
+        $this->apiClient = $apiClient;
     }
 
-    private function getDashboardStats(): array
+    #[Route('/admin', name: 'admin_dashboard')]
+    public function index(): Response
     {
-        // Implement your stats logic here
-        return [
-            'total_products' => 0,
-            'low_stock_items' => 0,
-            // ...
-        ];
+        // Fetch some key metrics
+        $equipmentResponse = $this->apiClient->getCollection('/equipment');
+        $movementsResponse = $this->apiClient->getCollection('/movements');
+    
+        // dump($equipmentResponse);
+        // dump($movementsResponse);
+        // var_dump($equipmentResponse);
+
+        $totalEquipment = count($equipmentResponse);
+        $totalMovements = count($movementsResponse);
+
+        // $totalEquipment = isset($equipmentResponse['hydra:member']) 
+        //     ? count($equipmentResponse['hydra:member']) 
+        //     : 0;
+        
+        // $totalMovements = isset($movementsResponse['hydra:member']) 
+        //     ? count($movementsResponse['hydra:member']) 
+        //     : 0;
+    
+        return $this->render('admin/dashboard/index.html.twig', [
+            'totalEquipment' => $totalEquipment,
+            'totalMovements' => $totalMovements
+        ]);
     }
 }

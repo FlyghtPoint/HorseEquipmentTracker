@@ -19,7 +19,11 @@ class ApiClientService
         TokenStorageInterface $tokenStorage,
         string $apiBaseUrl
     ) {
-        $this->client = HttpClient::create();
+        $this->client = HttpClient::create([
+            'verify_peer' => false,
+            'verify_host' => false
+            // 'local_cert' => true
+        ]);
         $this->serializer = $serializer;
         $this->tokenStorage = $tokenStorage;
         $this->apiBaseUrl = $apiBaseUrl;

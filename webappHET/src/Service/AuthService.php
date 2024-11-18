@@ -15,7 +15,12 @@ class AuthService
         string $apiBaseUrl, 
         SessionInterface $session
     ) {
-        $this->client = HttpClient::create();
+        $this->client = HttpClient::create([
+            'verify_peer' => false,
+            'verify_host' => false
+            // 'local_cert' => true
+            // 'cafile' => '/etc/ssl/certs/ca-certificates.crt'
+        ]);
         $this->apiBaseUrl = $apiBaseUrl;
         $this->session = $session;
     }
