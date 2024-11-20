@@ -1,21 +1,24 @@
 <?php
 namespace App\Service;
 
+use App\Dto\UserDto;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ApiClientService
 {
-    private $client;
-    private $serializer;
+    // private $client;
+    // private $serializer;
     private $tokenStorage;
     private $apiBaseUrl;
     private $jwtToken;
 
     public function __construct(
-        SerializerInterface $serializer, 
+        private HttpClientInterface $client,
+        private SerializerInterface $serializer,
         TokenStorageInterface $tokenStorage,
         string $apiBaseUrl
     ) {
