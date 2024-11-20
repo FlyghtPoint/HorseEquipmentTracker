@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 // use Symfony\Component\Security\Core\User\UserInterface;
 
 /** A reservation of an equipment. */
@@ -35,6 +36,7 @@ class Reservation
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['equipment:read'])]
     #[Assert\Type(
         type: \DateTimeInterface::class,
         message: 'The value {{ value }} is not a valid datetime.'
@@ -42,6 +44,7 @@ class Reservation
     private ?\DateTimeInterface $start_date = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['equipment:read'])]
     #[Assert\NotNull(message: 'End date cannot be null')]
     #[Assert\Type(
         type: \DateTimeInterface::class,
@@ -54,6 +57,7 @@ class Reservation
     private ?\DateTimeInterface $end_date = null;
 
     #[ORM\Column(type: 'string',length: 20)]
+    #[Groups(['equipment:read'])]
     #[Assert\NotBlank(message: 'Status cannot be blank')]
     #[Assert\Choice(
         choices: ['pending', 'confirmed', 'canceled'],
@@ -62,6 +66,7 @@ class Reservation
     private string $status;
 
     #[ORM\Column(type: 'string', length: 20)]
+    #[Groups(['equipment:read'])]
     #[Assert\NotBlank(message: 'Type cannot be blank')]
     #[Assert\Choice(
         choices: ['loan', 'maintenance', 'repair'],
@@ -71,6 +76,7 @@ class Reservation
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['equipment:read'])]
     #[Assert\NotNull(message: 'User must be specified')]
     private ?User $user = null;
 

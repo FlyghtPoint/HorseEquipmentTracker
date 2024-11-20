@@ -7,6 +7,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 // use App\Repository\EquipmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiResource(
     paginationItemsPerPage: 5,
     paginationMaximumItemsPerPage: 50,
+    normalizationContext: ['groups' => ['equipment:read']],
 )]
 #[ApiFilter(SearchFilter::class, properties: [
     'name' => 'partial',
@@ -29,9 +31,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Equipment
 {
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
+    // #[Groups(['equipment:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['equipment:read'])]
     #[Assert\NotBlank(message: 'Equipment name cannot be blank')]
     #[Assert\Length(
         min: 2,
@@ -42,6 +46,7 @@ class Equipment
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['equipment:read'])]
     #[Assert\NotBlank(message: 'Description cannot be blank')]
     #[Assert\Length(
         min: 10,
@@ -53,16 +58,19 @@ class Equipment
 
     #[ORM\ManyToOne(inversedBy: 'equipment')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['equipment:read'])]
     #[Assert\NotNull(message: 'Category must be specified')]
     private ?Category $category = null;
 
     #[ORM\ManyToOne(inversedBy: 'equipment')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['equipment:read'])]
     #[Assert\NotNull(message: 'Location must be specified')]
     private ?Location $location = null;
 
     #[ORM\ManyToOne(inversedBy: 'equipment')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['equipment:read'])]
     #[Assert\NotNull(message: 'Condition must be specified')]
     private ?Condition $eCondition = null;
 
@@ -70,6 +78,7 @@ class Equipment
      * @var Collection<int, Reservation>
      */
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'equipment')]
+    #[Groups(['equipment:read'])]
     private Collection $reservations;
 
     public function __construct()

@@ -5,7 +5,11 @@ namespace App\Entity;
 // use App\Repository\LocationRepository;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,6 +23,7 @@ class Location
     private ?int $id = null;
 
     #[ORM\Column(length: 2)]
+    #[Groups(['equipment:read'])]
     #[Assert\NotBlank(message: 'Aisle cannot be blank')]
     #[Assert\Length(
         exactly: 2,
@@ -31,6 +36,7 @@ class Location
     private ?string $aisle = null;
 
     #[ORM\Column]
+    #[Groups(['equipment:read'])]
     #[Assert\NotNull(message: 'Shelf number cannot be null')]
     #[Assert\Positive(message: 'Shelf number must be a positive integer')]
     #[Assert\LessThanOrEqual(
@@ -67,12 +73,13 @@ class Location
         return $this;
     }
 
-    public function getShelf(): ?int
+    #[SerializedName('shelf_number')]
+    public function getShelfNumber(): ?int
     {
         return $this->shelf_number;
     }
 
-    public function setShelf(int $shelf_number): static
+    public function setShelfNumber(int $shelf_number): static
     {
         $this->shelf_number = $shelf_number;
 
