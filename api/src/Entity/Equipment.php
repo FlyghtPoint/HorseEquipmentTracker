@@ -31,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Equipment
 {
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
-    // #[Groups(['equipment:read'])]
+    #[Groups(['equipment:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
