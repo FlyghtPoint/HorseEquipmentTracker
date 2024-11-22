@@ -15,10 +15,10 @@ services:
       string $apiBaseUrl: "%app.api_base_url%"
       Symfony\Component\HttpFoundation\Session\SessionInterface: "@session"
 
-  App\Service\ApiClientService:
-    arguments:
-      $apiBaseUrl: "app.api_base_url"
-      $session: "@session"
+  # App\Service\ApiClientService:
+  # arguments:
+  # $apiBaseUrl: "app.api_base_url"
+  # $session: "@session"
 
   App\Service\AuthService:
     arguments:
