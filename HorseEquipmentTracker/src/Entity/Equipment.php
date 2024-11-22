@@ -6,6 +6,11 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 // use App\Repository\EquipmentRepository;
@@ -16,9 +21,26 @@ use Doctrine\ORM\Mapping as ORM;
 /** Equipment */
 #[ORM\Entity]
 #[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+        new Post(
+            security: "is_granted('ROLE_ADMIN')",
+            securityMessage: 'Only admins can add equipment.'
+        ),
+        new Put(
+            security: "is_granted('ROLE_ADMIN')",
+            securityMessage: 'Only admins can edit equipment.'
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')",
+            securityMessage: 'Only admins can delete equipment.'
+        ),
+    ],
+    normalizationContext: ['groups' => ['equipment:read']],
+    denormalizationContext: ['groups' => ['equipment:write']],
     paginationItemsPerPage: 5,
     paginationMaximumItemsPerPage: 50,
-    normalizationContext: ['groups' => ['equipment:read']],
 )]
 #[ApiFilter(SearchFilter::class, properties: [
     'name' => 'partial',

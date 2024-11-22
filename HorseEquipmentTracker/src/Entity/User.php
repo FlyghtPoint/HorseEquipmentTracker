@@ -3,6 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 // use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,10 +16,37 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\State\UserProcessor;
 
 /** A User. */
 #[ORM\Entity]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(
+            security: "is_granted('ROLE_ADMIN') or object == user",
+            securityMessage: 'You can only access your own user information.'
+        ),
+        new GetCollection(
+            security: "is_granted('ROLE_ADMIN')",
+            securityMessage: 'Only admins can view all users.'
+        ),
+        new Post(
+            security: "is_granted('PUBLIC_ACCESS')",
+            validationContext: ['groups' => ['Default', 'user:create']],
+            processor: UserProcessor::class
+        ),
+        new Put(
+            security: "is_granted('ROLE_ADMIN') or object == user",
+            securityMessage: 'You can only edit your own user information.'
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')",
+            securityMessage: 'Only admins can delete users.'
+        ),
+    ],
+    normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:write']],    
+)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -26,6 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         message: 'The email {{ value }} is not a valid email.',
     )]
     #[Assert\Length(max: 180)]
+    #[Groups(['user:read'])]
     private ?string $email = null;
 
     /**
@@ -33,6 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank(message: 'Password cannot be blank')]
+    #[Groups(['user:write'])]
     private ?string $password = null;
 
     /**
@@ -42,13 +77,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotNull]
     #[Assert\All([
         new Assert\Type(type: 'string', message: 'Each role must be a string')
-    ])]    
+    ])]
+    #[Groups(['user:read'])]
     private array $roles = [];
 
     /**
      * @var Collection<int, Reservation>
      */
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'user')]
+    #[Groups(['user:read'])]
     private Collection $reservations;
 
     public function __construct()

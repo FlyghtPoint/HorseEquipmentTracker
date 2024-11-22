@@ -1,17 +1,147 @@
+{# templates/base.html.twig #}
 <!DOCTYPE html>
-<html>
+<html lang="fr" class="h-full bg-gray-100">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Gestion d'Équipements{% endblock %}</title>
+        
+        {# Tailwind UI CDN #}
+        <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+        
+        {# Tailwind Configuration #}
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: {
+                                50: '#f0f9ff',
+                                100: '#e0f2fe',
+                                200: '#bae6fd',
+                                300: '#7dd3fc',
+                                400: '#38bdf8',
+                                500: '#0ea5e9',
+                                600: '#0284c7',
+                                700: '#0369a1',
+                                800: '#075985',
+                                900: '#0c4a6e',
+                            },
+                        }
+                    }
+                }
+            }
+        </script>
+        
+        {# Font d'icônes #}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        
+        {# Styles additionnels #}
+        <style type="text/tailwindcss">
+            @layer utilities {
+                .content-auto {
+                    content-visibility: auto;
+                }
+            }
+        </style>
+        
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body class="h-full">
+        <div class="min-h-full">
+            <nav class="bg-white shadow-sm">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="flex h-16 justify-between">
+                        <div class="flex">
+                            <div class="flex flex-shrink-0 items-center">
+                                <a href="{{ path('app_home') }}" class="text-2xl font-bold text-primary-600">
+                                    GestionEquip
+                                </a>
+                            </div>
+                            <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                                <a href="{{ path('app_home') }}" 
+                                   class="inline-flex items-center border-b-2 border-primary-500 px-1 pt-1 text-sm font-medium text-gray-900">
+                                    Accueil
+                                </a>
+                                <a href="{{ path('app_equipment_list') }}" 
+                                   class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
+                                    Équipements
+                                </a>
+                                {% if is_granted('ROLE_USER') %}
+                                    <a href="{{ path('app_reservations') }}" 
+                                       class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
+                                        Mes réservations
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                            {% if app.user %}
+                                <div class="relative ml-3">
+                                    <div>
+                                        <button type="button" 
+                                                class="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" 
+                                                id="user-menu-button">
+                                            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary-100">
+                                                <span class="text-sm font-medium leading-none text-primary-700">
+                                                    {{ app.user.email|first|upper }}
+                                                </span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="ml-3">
+                                    <a href="{{ path('app_logout') }}" 
+                                       class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                        Déconnexion
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="flex space-x-4">
+                                    <a href="{{ path('app_login') }}" 
+                                       class="inline-flex items-center rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600">
+                                        Connexion
+                                    </a>
+                                    <a href="{{ path('app_register') }}" 
+                                       class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                        Inscription
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="py-10">
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="rounded-md {% if label == 'success' %}bg-green-50{% else %}bg-blue-50{% endif %} p-4 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-info-circle {% if label == 'success' %}text-green-400{% else %}text-blue-400{% endif %}"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium {% if label == 'success' %}text-green-800{% else %}text-blue-800{% endif %}">
+                                        {{ message }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                %}
+
+                <main>
+                    <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                        {% block body %}{% endblock %}
+                    </div>
+                </main>
+            </div>
+        </div>
 
         {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
+            {# Alpine.js pour les interactions UI #}
+            <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
         {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
     </body>
 </html>

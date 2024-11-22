@@ -1,0 +1,54 @@
+{# templates/home/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - Gestion d'Équipements{% endblock %}
+
+{% block body %}
+    <div class="bg-white rounded-lg shadow">
+        <div class="mx-auto max-w-7xl py-12 px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-base font-semibold text-primary-600">Gestion d'Équipements</h2>
+                <p class="mt-2 text-3xl font-bold leading-8 tracking-tight text-gray-900 sm:text-4xl">
+                    Bienvenue sur notre plateforme
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                    Gérez facilement vos équipements et réservations en quelques clics.
+                </p>
+            </div>
+
+            <div class="mt-10">
+                <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                    <div class="p-6 bg-gray-50 rounded-lg">
+                        <div class="text-center">
+                            <i class="fas fa-box text-4xl text-primary-500 mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-900">Équipements disponibles</h3>
+                            <p class="mt-2 text-gray-600">
+                                Consultez notre catalogue d'équipements disponibles.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-gray-50 rounded-lg">
+                        <div class="text-center">
+                            <i class="fas fa-calendar-alt text-4xl text-primary-500 mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-900">Réservations faciles</h3>
+                            <p class="mt-2 text-gray-600">
+                                Réservez vos équipements en quelques étapes simples.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-gray-50 rounded-lg">
+                        <div class="text-center">
+                            <i class="fas fa-history text-4xl text-primary-500 mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-900">Suivi en temps réel</h3>
+                            <p class="mt-2 text-gray-600">
+                                Suivez l'état et la disponibilité de vos équipements.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
