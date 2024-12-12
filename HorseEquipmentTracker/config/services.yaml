@@ -24,6 +24,10 @@ services:
     arguments:
       $apiBaseUrl: "app.api_base_url"
 
+  App\Security\Authentication\LoginSuccessHandler:
+    tags:
+      - { name: "security.authentication_success_handler" }
+
   session:
     class: Symfony\Component\HttpFoundation\Session\Session
     public: true

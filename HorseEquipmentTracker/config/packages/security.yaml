@@ -14,28 +14,29 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
 
-    admin:
-      pattern: ^/admin
-      provider: app_user_provider
-      form_login:
-        login_path: admin_login
-        check_path: admin_login
-        default_target_path: admin_dashboard
-        username_parameter: _username
-        password_parameter: _password
-      logout:
-        path: admin_logout
-        target: admin_login
+    # admin:
+    #   pattern: ^/admin
+    #   provider: app_user_provider
+    #   form_login:
+    #     login_path: admin_login
+    #     check_path: admin_login
+    #     default_target_path: admin_dashboard
+    #     username_parameter: _username
+    #     password_parameter: _password
+    #   logout:
+    #     path: admin_logout
+    #     target: admin_login
 
     main:
       pattern: ^/
-      provider: app_user_provider
+      # provider: app_user_provider
       form_login:
+        success_handler: App\Security\Authentication\LoginSuccessHandler
         login_path: app_login
         check_path: app_login
         default_target_path: app_home
-        username_parameter: _username
-        password_parameter: _password
+        # username_parameter: _username
+        # password_parameter: _password
       logout:
         path: app_logout
         target: app_login

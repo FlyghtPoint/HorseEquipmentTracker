@@ -49,16 +49,16 @@ class DashboardController extends AbstractDashboardController
      
         yield MenuItem::section('Gestion des équipements');
         yield MenuItem::linkToCrud('Équipements', 'fas fa-box', Equipment::class);
-        yield MenuItem::linkToCrud('Mouvements', 'fas fa-exchange-alt', Movement::class);
-        yield MenuItem::linkToCrud('Réservations', 'fas fa-calendar', Reservation::class);
+        // yield MenuItem::linkToCrud('Mouvements', 'fas fa-exchange-alt', Movement::class);
+        // yield MenuItem::linkToCrud('Réservations', 'fas fa-calendar', Reservation::class);
 
         yield MenuItem::section('Configuration');
-        yield MenuItem::linkToCrud('États', 'fas fa-thermometer-half', Condition::class);
-        yield MenuItem::linkToCrud('Emplacements', 'fas fa-map-marker', Location::class);
-        yield MenuItem::linkToCrud('Catégories', 'fas fa-tags', Category::class);
+        // yield MenuItem::linkToCrud('États', 'fas fa-thermometer-half', Condition::class);
+        // yield MenuItem::linkToCrud('Emplacements', 'fas fa-map-marker', Location::class);
+        // yield MenuItem::linkToCrud('Catégories', 'fas fa-tags', Category::class);
         
         yield MenuItem::section('Utilisateurs');
-        yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);
+        // yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);
         
         yield MenuItem::section('Système');
         yield MenuItem::linkToRoute('Retour au site', 'fas fa-home', 'app_home');
