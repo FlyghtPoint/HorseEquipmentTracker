@@ -12,7 +12,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): RedirectResponse
     {
         if (in_array('ROLE_ADMIN', $token->getRoleNames())) {
-            return new RedirectResponse('/admin/dashboard');
+            return new RedirectResponse('/admin/');
         }
         
         return new RedirectResponse('/');
