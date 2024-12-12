@@ -14,6 +14,32 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
 
+    admin:
+      pattern: ^/admin
+      provider: app_user_provider
+      form_login:
+        login_path: admin_login
+        check_path: admin_login
+        default_target_path: admin_dashboard
+        username_parameter: _username
+        password_parameter: _password
+      logout:
+        path: admin_logout
+        target: admin_login
+
+    main:
+      pattern: ^/
+      provider: app_user_provider
+      form_login:
+        login_path: app_login
+        check_path: app_login
+        default_target_path: app_home
+        username_parameter: _username
+        password_parameter: _password
+      logout:
+        path: app_logout
+        target: app_login
+
     login:
       pattern: ^/api/login
       stateless: true
@@ -27,9 +53,19 @@ security:
       stateless: true
       jwt: ~
 
+  role_hierarchy:
+    ROLE_ADMIN: ROLE_USER
+
   access_control:
-  # Define security rules here
-  # Ask for good practices
-  # - { path: ^/api/login, roles: PUBLIC_ACCESS } and register and documentation
-  # - { path: ^/api, methods: [GET], roles: PUBLIC_ACCESS }  # Anyone can view anything
-  # - { path: ^/api, methods: [POST, PUT, DELETE], roles: ROLE_ADMIN }  # Only admin can create, update, delete
+    # Admin section
+    - { path: ^/admin/login, roles: PUBLIC_ACCESS }
+    - { path: ^/admin, roles: ROLE_ADMIN }
+
+    # Public section
+    - { path: ^/login, roles: PUBLIC_ACCESS }
+    - { path: ^/register, roles: PUBLIC_ACCESS }
+
+    # API section
+    - { path: ^/api/login, roles: PUBLIC_ACCESS }
+    - { path: ^/api/register, roles: PUBLIC_ACCESS }
+    - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

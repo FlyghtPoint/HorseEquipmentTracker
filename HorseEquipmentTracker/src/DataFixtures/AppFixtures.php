@@ -84,7 +84,7 @@ class AppFixtures extends Fixture
         foreach ($combinations as $c) {
             $location = new Location();
             $location->setAisle($c['aisle']);
-            $location->setShelf($c['shelf']);
+            $location->setShelfNumber($c['shelf']);
             $manager->persist($location);
         }
 
