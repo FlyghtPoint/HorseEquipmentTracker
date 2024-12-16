@@ -25,4 +25,10 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
+    '@graphiql/react' => [
+        'version' => '0.15.0',
+    ],
+    'graphql' => [
+        'version' => '16.0.0',
+    ],    
 ];

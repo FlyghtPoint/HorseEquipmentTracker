@@ -1,0 +1,19 @@
+{
+  "name": "horseequipmenttracker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@graphiql/react": "^0.28.0",
+    "graphql": "^16.10.0"
+  }
+}

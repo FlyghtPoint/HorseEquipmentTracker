@@ -34,3 +34,7 @@ auth.json
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+###> npm ###
+/node_modules/
+###< npm ###
