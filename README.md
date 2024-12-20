@@ -1,13 +1,12 @@
 # Horse Equipment Tracker
 
-Une application web qui permet de consulter et de réserver du matériel en rapport avec le monde de l'équitation.
+Une application web permettant de consulter et de réserver du matériel équestre.
 
-## Overview
+## Présentation
 
-Horse Equipment Tracker is a Symfony-based application that helps equestrians manage their equipment inventory efficiently. The application features a PHP backend with GraphQL integration for flexible data querying.
-L'application est basée sur Symfony (7.1.9). Un back-office constitué d'un tableau de bord pour les administrateurs est disponible. Les données sont stockées en base de donnée et accessible depuis une api.
+Horse Equipment Tracker est une application basée sur Symfony (7.1.9) pour gérer efficacement de l'équipement équestre. L'application dispose d'un back-end PHP et d'un front-end utilisant twig ainsi que tailwind UI. Un back-office avec tableau de bord est disponible pour les administrateurs (grâce au bundle easyadmin). Les données sont stockées en base de données et accessibles via une API construite avec API Platform.
 
-## Prerequisites
+## Prérequis
 
 - PHP 8.3
 - Composer
@@ -15,58 +14,57 @@ L'application est basée sur Symfony (7.1.9). Un back-office constitué d'un tab
 
 ## Installation
 
-1. Clone the repository:
+1. Cloner le dépôt :
 
 ```bash
 git clone https://github.com/FlyghtPoint/HorseEquipmentTracker
-cd HorseEquipmentTracker
 ```
 
-2. Install dependencies:
+2. Installer les dépendances :
 
 ```bash
 make install
 ```
 
-3. Configure environment:
+3. Configurer l'environnement :
 
 ```bash
 cp .env .env.local
 ```
 
-Edit .env.local with your database credentials and other configuration settings.
+Modifiez le fichier .env.local avec vos identifiants de base de données et autres paramètres de configuration.
 
-## Development
+## Développement
 
-Start the development server:
+Démarrer le serveur de développement :
 
 ```bash
 make dev
 ```
 
-Run tests:
+Lancer les tests :
 
 ```bash
 make test
 ```
 
-## Build
+## Production
 
-Build for production:
+Construire pour la production :
 
 ```bash
 make build
 ```
 
-## Database
+## Base de données
 
-Initialize the database:
+Initialiser la base de données :
 
 ```bash
 make db-init
 ```
 
-Run migrations:
+Exécuter les migrations :
 
 ```bash
 make db-migrate
