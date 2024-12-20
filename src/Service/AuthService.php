@@ -30,7 +30,6 @@ class AuthService
     public function login(string $email, string $password): ?string
     {
         try {
-            // First, try to authenticate against the API
             $response = $this->client->request(
                 'POST', 
                 $this->apiBaseUrl . '/login_check',

@@ -45,17 +45,9 @@ class ReservationController extends AbstractController
     }    
 
     #[Route('/create', name: 'app_reservation_create', methods: ['POST'])]
-    // public function create(Request $request): Response
     public function create(Request $request): Response
     {
         try {
-            // Debug request data
-            $this->logger->debug('Reservation request data:', [
-                'equipment_id' => $request->request->get('equipment_id'),
-                'start_date' => $request->request->get('start_date'),
-                'end_date' => $request->request->get('end_date')                
-            ]);
-
             $equipmentId = $request->request->get('equipment_id');
             $equipment = $this->equipmentRepository->find($equipmentId);
             
@@ -63,27 +55,8 @@ class ReservationController extends AbstractController
                 throw new \Exception('Equipment not found');
             }
 
-            // // Debug equipment data
-            // $this->logger->debug('Equipment found:', [
-            //     'id' => $equipment->getId(),
-            //     'name' => $equipment->getName()
-            // ]);
-
             $startDate = new \DateTime($request->request->get('start_date'));
             $endDate = new \DateTime($request->request->get('end_date'));
-
-            // // Debug dates
-            // $this->logger->debug('Parsed dates:', [
-            //     'start' => $startDate->format('Y-m-d H:i:s'),
-            //     'end' => $endDate->format('Y-m-d H:i:s')
-            // ]);
-
-            // var_dump($equipment, $this->getUser());
-
-            $this->logger->debug('Before createReservation call', [
-                'equipment_class' => get_class($equipment),
-                'user_class' => get_class($this->getUser())
-            ]);
 
             $reservation = $this->reservationService->createReservation(
                 $equipment,
@@ -95,14 +68,6 @@ class ReservationController extends AbstractController
             $this->addFlash('success', 'Reservation created successfully');
             return $this->redirectToRoute('app_reservations');
         } catch (\Exception $e) {
-            // Log detailed error
-            $this->logger->error('Detailed error', [
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            ]);
-
             $this->addFlash('error', $e->getMessage());
             return $this->redirectToRoute('app_reservations');
         }

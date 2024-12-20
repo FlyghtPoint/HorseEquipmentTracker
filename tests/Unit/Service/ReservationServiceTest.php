@@ -99,25 +99,4 @@ class ReservationServiceTest extends TestCase
             $endDate
         );
     }
-
-    // public function testRejectInvalidDates(): void
-    // {
-    //     // Arrange
-    //     $equipment = new Equipment();
-    //     $user = new User();
-    //     $startDate = new \DateTime('+1 days');
-    //     $endDate = new \DateTime('+2 day');
-
-    //     // Assert
-    //     $this->expectException(\Exception::class);
-    //     $this->expectExceptionMessage('End date must be after start date');
-
-    //     // Act
-    //     $this->reservationService->createReservation(
-    //         $equipment,
-    //         $user,
-    //         $startDate,
-    //         $endDate
-    //     );
-    // }
 }

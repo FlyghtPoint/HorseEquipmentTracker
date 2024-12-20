@@ -21,22 +21,6 @@ class ReservationRepository extends ServiceEntityRepository
 
     public function findConflictingReservations(Equipment $equipment, \DateTime $startDate, \DateTime $endDate): array
     {
-        // return $this->createQueryBuilder('r')
-        //     ->where('r.equipment = :equipment')
-        //     ->andWhere('r.status != :cancelledStatus')
-        //     ->andWhere(
-        //         '(r.startDate BETWEEN :start AND :end) OR 
-        //          (r.endDate BETWEEN :start AND :end) OR
-        //          (r.startDate <= :start AND r.endDate >= :end)'
-        //     )
-        //     ->setParameters(new \Doctrine\Common\Collections\ArrayCollection([
-        //         'equipment' => $equipment,
-        //         'cancelledStatus' => 'cancelled',
-        //         'start' => $startDate,
-        //         'end' => $endDate
-        //     ]))
-        //     ->getQuery()
-        //     ->getResult();
         $qb = $this->createQueryBuilder('r')
             ->where('r.equipment = :equipment')
             ->andWhere('r.status != :cancelledStatus')
