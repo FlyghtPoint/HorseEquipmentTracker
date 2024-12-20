@@ -18,6 +18,7 @@ Horse Equipment Tracker est une application basée sur Symfony (7.1.9) pour gér
 
 ```bash
 git clone https://github.com/FlyghtPoint/HorseEquipmentTracker
+cd HorseEquipmentTracker
 ```
 
 2. Installer les dépendances :
