@@ -61,8 +61,8 @@ class DashboardController extends AbstractDashboardController
         ]);
 
         yield MenuItem::section('Rapports');
-        yield MenuItem::linkToRoute('Historique', 'fas fa-history', 'admin_history');
-        yield MenuItem::linkToRoute('Statistiques', 'fas fa-chart-bar', 'admin_stats');
+        // yield MenuItem::linkToRoute('Historique', 'fas fa-history', 'admin_history');
+        // yield MenuItem::linkToRoute('Statistiques', 'fas fa-chart-bar', 'admin_stats');
         
         yield MenuItem::section('Utilisateurs');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);

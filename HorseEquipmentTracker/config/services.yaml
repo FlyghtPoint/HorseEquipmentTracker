@@ -24,6 +24,10 @@ services:
     arguments:
       $apiBaseUrl: "app.api_base_url"
 
+  App\Service\MovementService:
+    arguments:
+      $entityManager: "@doctrine.orm.entity_manager"
+
   App\Security\Authentication\LoginSuccessHandler:
     tags:
       - { name: "security.authentication_success_handler" }

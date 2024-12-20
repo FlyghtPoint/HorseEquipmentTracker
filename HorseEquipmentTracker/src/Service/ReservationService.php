@@ -7,12 +7,15 @@ use App\Entity\Equipment;
 use App\Entity\User;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 
 class ReservationService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private ReservationRepository $reservationRepository
+        private ReservationRepository $reservationRepository,
+        private MovementService $movementService,
+        private LoggerInterface $logger
     ) {}
 
     public function createReservation(Equipment $equipment, User $user, \DateTime $startDate, \DateTime $endDate): Reservation
@@ -27,9 +30,21 @@ class ReservationService
         $reservation->setStartDate($startDate);
         $reservation->setEndDate($endDate);
         $reservation->setStatus('pending');
+        $reservation->setType('loan');
 
         $this->entityManager->persist($reservation);
         $this->entityManager->flush();
+
+        try {
+            $this->movementService->createMovement($reservation, 'out', $startDate);
+            $this->movementService->createMovement($reservation, 'in', $endDate);
+        } catch (\Exception $e) {
+            $this->logger->error('Failed to create movements', [
+                'error' => $e->getMessage(),
+                'reservation_id' => $reservation->getId()
+            ]);
+            throw $e;
+        }
 
         return $reservation;
     }
