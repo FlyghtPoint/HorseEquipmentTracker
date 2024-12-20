@@ -60,7 +60,7 @@ class Reservation
     #[Groups(['equipment:read'])]
     #[Assert\NotBlank(message: 'Status cannot be blank')]
     #[Assert\Choice(
-        choices: ['pending', 'confirmed', 'canceled'],
+        choices: ['pending', 'accepted', 'canceled'],
         message: 'Status must be one of: {{ choices }}'
     )]
     private string $status;

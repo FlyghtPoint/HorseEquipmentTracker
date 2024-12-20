@@ -60,16 +60,25 @@
                             </div>
                             <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                                 <a href="{{ path('app_home') }}" 
-                                   class="inline-flex items-center border-b-2 border-primary-500 px-1 pt-1 text-sm font-medium text-gray-900">
+                                   class="inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium
+                                   {{ app.request.get('_route') == 'app_home'
+                                       ? 'border-primary-500 text-gray-900'
+                                       : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">
                                     Accueil
                                 </a>
                                 <a href="{{ path('app_equipment_list') }}" 
-                                   class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
+                                class="inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium
+                                {{ app.request.get('_route') == 'app_equipment_list' 
+                                    ? 'border-primary-500 text-gray-900'
+                                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">
                                     Équipements
                                 </a>
                                 {% if is_granted('ROLE_USER') %}
                                     <a href="{{ path('app_reservations') }}" 
-                                       class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
+                                    class="inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium
+                                    {{ app.request.get('_route') == 'app_reservations' 
+                                        ? 'border-primary-500 text-gray-900'
+                                        : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">
                                         Mes réservations
                                     </a>
                                 {% endif %}
