@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 /** A location in the warehouse. */
 #[ORM\Entity]
 #[ApiResource]
+#[Groups(['equipment:read'])]
 class Location
 {
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
@@ -115,4 +116,9 @@ class Location
 
         return $this;
     }
+
+    // public function __toString(): string
+    // {
+    //     return sprintf('%s-%d', $this->aisle, $this->shelf_number);
+    // }
 }

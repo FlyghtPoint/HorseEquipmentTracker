@@ -34,12 +34,25 @@ class EquipmentCrudController extends AbstractCrudController
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('name', 'Nom');
         yield TextEditorField::new('description')->hideOnIndex();
-        yield AssociationField::new('category', 'Catégorie');
-        yield AssociationField::new('location', 'Emplacement');
-        yield AssociationField::new('eCondition', 'État');
-        yield DateTimeField::new('createdAt', 'Créé le')->hideOnForm();
-        yield DateTimeField::new('updatedAt', 'Mis à jour le')->hideOnForm();
-    
+        yield AssociationField::new('category', 'Catégorie')
+            ->setFormTypeOption('choice_label', 'name')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getCategory() ? $entity->getCategory()->getName() : '';
+            });
+        yield AssociationField::new('location', 'Emplacement')
+            ->setFormTypeOption('choice_label', 'aisle')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getLocation() ?
+                    sprintf('%s-%d',
+                        $entity->getLocation()->getAisle(),
+                            $entity->getLocation()->getShelfNumber()
+                    ) : '';
+            });
+        yield AssociationField::new('eCondition', 'État')
+            ->setFormTypeOption('choice_label', 'name')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getECondition() ? $entity->getECondition()->getName() : '';
+            });
     }
 
     public function configureActions(Actions $actions): Actions

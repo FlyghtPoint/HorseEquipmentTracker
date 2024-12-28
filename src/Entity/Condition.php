@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: "`condition`")]
 #[ApiResource]
+#[Groups(['equipment:read'])]
 class Condition
 {
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]

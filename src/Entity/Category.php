@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 /** Category */
 #[ORM\Entity]
 #[ApiResource]
+#[Groups(['equipment:read'])]
 class Category
 {
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
