@@ -30,6 +30,7 @@ security:
     main:
       pattern: ^/
       # provider: app_user_provider
+      entry_point: App\Security\AuthenticationEntryPoint\LoginFormAuthenticationEntryPoint
       form_login:
         success_handler: App\Security\Authentication\LoginSuccessHandler
         login_path: app_login
@@ -39,7 +40,27 @@ security:
         # password_parameter: _password
       logout:
         path: app_logout
+        invalidate_session: true
+        clear_site_data:
+          - "cache"
+          - "storage"
+          - "cookies"
+        delete_cookies:
+          PHPSESSID:
+            path: /
+          session:
+            path: /
         target: app_login
+      remember_me:
+        secret: "%kernel.secret%"
+        lifetime: 604800
+        always_remember_me: false
+        samesite: "strict"
+        secure: true
+        path: /
+        name: REMEMBERME
+        remember_me_parameter: _remember_me
+        signature_properties: [password]
 
     login:
       pattern: ^/api/login

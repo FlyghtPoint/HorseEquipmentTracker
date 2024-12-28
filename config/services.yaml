@@ -23,6 +23,12 @@ services:
     arguments:
       $entityManager: "@doctrine.orm.entity_manager"
 
+  App\Security\AuthenticationEntryPoint\LoginFormAuthenticationEntryPoint:
+    arguments:
+      $urlGenerator: "@router"
+    tags:
+      - { name: "security.authentication_entry_point" }
+
   App\Security\Authentication\LoginSuccessHandler:
     tags:
       - { name: "security.authentication_success_handler" }
